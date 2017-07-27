@@ -3,5 +3,5 @@
 npm --quiet install
 node_modules/.bin/bower --config.interactive=false -s -f install
 
-node_modules/.bin/browserify -s app -t reactify public/js/App.js | node_modules/.bin/uglifyjs -m -c > public/js/App.bin.js
+node_modules/.bin/browserify -s app -t reactify public/js/App.js | node_modules/.bin/uglifyjs -m -c > public/js/App.bundle.js
 NODE_ENV=${NODE_ENV} node app.js

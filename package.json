@@ -3,6 +3,8 @@
   "version": "0.10.0",
   "scripts": {
     "start": "node app.js",
+    "build": "browserify -v -s app -t reactify public/js/App.js -o public/js/App.bundle.js",
+    "watch": "watchify -v -s app -t reactify public/js/App.js -o public/js/App.bundle.js",
     "test": "mocha test/*"
   },
   "dependencies": {
@@ -36,6 +38,6 @@
   },
   "devDependencies": {
     "mocha": "~1.17.0",
-    "expect.js": "~0.2.0"
+    "watchify": "^3.9.0"
   }
 }

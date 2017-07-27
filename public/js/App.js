@@ -291,7 +291,7 @@ var frontApp = function() {
 				return rekey(datasets, names);
 			});
 		}
-	).done(
+	).then(
 		function(newLists) {
 			lists = newLists;
 			todoListList.setProps({lists: lists});

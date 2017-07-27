@@ -1,3 +1,5 @@
+.idea
 node_modules
+npm-debug.log
 public/vendor-bower
-public/js/App.bin.js
+public/js/App.bundle.js

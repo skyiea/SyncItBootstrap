@@ -24,9 +24,6 @@ html(lang="en", manifest=production?"/offline.manifest.appcache":undefined)
 		#loadingPopup
 
 	script(src="/vendor-bower/react/react-with-addons.min.js")
-	if production
-		script(src="/js/App.bin.js")
-	else
-		script(src="/js/App.js")
+	script(src="/js/App.bundle.js")
 	script.
 		app.front();

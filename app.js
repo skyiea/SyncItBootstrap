@@ -7,7 +7,6 @@ var express = require('express'),
 	generateNewDatasetName = require('./lib/generateNewDatasetName'),
 	fs = require('fs'),
 	appConfig = require('ini').parse(fs.readFileSync('./config.ini', 'utf-8')),
-	browserify = require('browserify-middleware'),
 	mongoskin = require('mongoskin'),
 	SseCommunication = require('sse-communication/Simple'),
 	ReferenceServer = require('syncit-server/ReferenceServer'),
@@ -78,19 +77,6 @@ var express = require('express'),
 	app.use(express.methodOverride());
 	app.use(allowCors);
 	app.use(app.router);
-
-	if ( mode !== 'production') {
-		app.get(
-			'/js/App.js',
-			browserify(
-				'./public/js/App.js',
-				{
-					transform: require('reactify'),
-					standalone: 'app'
-				}
-			)
-		);
-	}
 
 	app.use(express.static(path.join(__dirname, 'public')));
 
@@ -186,10 +172,14 @@ var isDatasetInvalidOrAlreadyUsed = function(dataset, next) {
 
 app.post('/', function(req, res, next) {
 	"use strict";
-	generateNewDatasetName(generateRandomString.bind(this, 12), isDatasetInvalidOrAlreadyUsed, function(e, listId) {
-		if (e) { return next(e); }
-		res.redirect('/list#/' + listId);
-	});
+	generateNewDatasetName(
+		generateRandomString.bind(this, 12),
+		isDatasetInvalidOrAlreadyUsed,
+		function(e, listId) {
+			if (e) { return next(e); }
+			res.redirect('/list#/' + listId);
+		}
+	);
 });
 
 app.get(
@@ -228,7 +218,7 @@ app.get('/offline.manifest.appcache', function(req, res) {
 		'/vendor-bower/todomvc-common/base.css',
 		'/vendor-bower/todomvc-common/bg.png',
 		'/vendor-bower/react/react-with-addons.min.js',
-		'/js/App.bin.js',
+		'/js/App.bundle.js',
 		'',
 		'NETWORK:',
 		'*'
