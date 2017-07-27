@@ -9,13 +9,13 @@
 		// like Node.
 		module.exports = factory(
 			require('expect.js'),
-			require('../lib/generateNewDatasetName')
+			require('./generateNewDatasetName')
 		);
 	} else if (typeof define === 'function' && define.amd) {
 		// AMD. Register as an anonymous module.
 		define(
 			[
-				'../lib/generateNewDatasetName'
+				'../server/lib/generateNewDatasetName'
 			],
 			factory.bind(this, expect)
 		);

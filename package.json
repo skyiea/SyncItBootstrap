@@ -2,7 +2,7 @@
   "name": "syncit-todomvc",
   "version": "0.10.0",
   "scripts": {
-    "start": "node app.js",
+    "start": "node server/index.js",
     "build": "browserify -v -s app -t reactify public/js/App.js -o public/js/App.bundle.js",
     "watch": "watchify -v -s app -t reactify public/js/App.js -o public/js/App.bundle.js",
     "test": "mocha test/*"
@@ -17,7 +17,6 @@
     "eventsource-monitor": "^0.9.3",
     "express": "3.4.7",
     "get_tlid_encoder_decoder": "^0.9.3",
-    "ini": "^1.2.1",
     "jade": "^1.1.5",
     "jshint": "~2.4.4",
     "localforage": "^1.2.2",

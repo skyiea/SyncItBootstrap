@@ -1,5 +1,5 @@
 /*jshint -W079 */
-var fixNoFlightCorsRequestBody = require('../lib/fixNoFlightCorsRequestBody'),
+var fixNoFlightCorsRequestBody = require('./fixNoFlightCorsRequestBody'),
 	expect = require('expect.js');
 
 describe('fixNoFlightCorsRequestBody says...',function() {

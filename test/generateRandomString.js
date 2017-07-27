@@ -1,5 +1,5 @@
 /*jshint -W079 */
-var generateRandomString = require('../lib/generateRandomString'),
+var generateRandomString = require('./generateRandomString'),
 	expect = require('expect.js');
 console.log(generateRandomString);
 
