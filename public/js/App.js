@@ -1,19 +1,28 @@
 module.exports = (function (
-	React, TodoListList,
-	RenameListPopup, OkCancelPopup,
-	TodoList, Constants,
-	syncItLoadAllKeysInDataset, rekey,
-	getDeviceId, SyncItFactory,
-	objectMap, routerLib,
-	browserLights, UpdateNotifierPopup,
+	React,
+	TodoListList,
+	RenameListPopup,
+	OkCancelPopup,
+	TodoList,
+	Constants,
+	syncItLoadAllKeysInDataset,
+	rekey,
+	getDeviceId,
+	SyncItFactory,
+	objectMap,
+	routerLib,
+	browserLights,
+	UpdateNotifierPopup,
 	getChangeLog /*, FakeLocalStorage */,
-	LoadingPopup, MailtoPopup,
-	todomvcConflictResolutionFunction, req,
-	whenCallback, when,
-	arrayMap, syncItCallbackToPromise
+	LoadingPopup,
+	MailtoPopup,
+	todomvcConflictResolutionFunction,
+	req,
+	whenCallback,
+	when,
+	arrayMap,
+	syncItCallbackToPromise
 ){
-
-/* global window: false, document: false */
 
 "use strict";
 
@@ -33,27 +42,17 @@ var
 	// Whether or not to persist data in LocalStorage, though this is fed through
 	// the jade template from the appConfig variable right at the top of the
 	// servers app.js
-	persistData = parseInt(document.body.dataset.persistData, 10) ? true : false,
+	persistData = parseInt(document.body.dataset.persistData, 10),
 
 	// Whether we are in production or not. This will switch to using HTTPS for
 	// API connections.
-	inProduction = (function() {
-		/* global document: false */
-		return parseInt(document.body.dataset.inProduction, 10) ? true : false;
-	}()),
-
+	inProduction = parseInt(document.body.dataset.inProduction, 10),
 	// This is the URL that is used for connections, in this case we are
 	// going to do the API stuff across HTTPS but still keep the UI as
 	// HTTP, so we're going to switch protocols here.
-	baseUrl = (function() {
-		/* global window: false */
-		if (!inProduction) { return ''; }
-		return 'https://' + window.location.hostname;
-	}()),
-
+	baseUrl = !inProduction ? '' : 'https://' + window.location.hostname,
 	// This is a Factory for all things SyncIt.
 	syncItFactory = new SyncItFactory(persistData),
-
 	// The first parameter of this function should generate completely unique
 	// Ids for the whole system as it should identify a unique user/device
 	// combination. Therefore it probably should come from the backend of your
@@ -166,8 +165,6 @@ var
 	;
 
 (function() {
-	/* global window: false */
-
 	var onUpdateReady = function() {
 		okCancelPopup.setProps({
 			onCancel: function() {},
@@ -183,10 +180,10 @@ var
 	};
 
 	window.applicationCache.addEventListener('updateready', onUpdateReady);
+
 	if(window.applicationCache.status === window.applicationCache.UPDATEREADY) {
 		onUpdateReady();
 	}
-
 }());
 
 if (Object.getOwnPropertyNames(changesForUser).length) {
@@ -205,30 +202,9 @@ if (Object.getOwnPropertyNames(changesForUser).length) {
 	);
 }
 
-React.renderComponent(
-	okCancelPopup,
-	(function() {
-		/* global document: false */
-		return document.getElementById('okCancelPopup');
-	}())
-);
-
-React.renderComponent(
-	loadingPopup,
-	(function() {
-		/* global document: false */
-		return document.getElementById('loadingPopup');
-	}())
-);
-
-React.renderComponent(
-	updateNotifierPopup,
-	(function() {
-		/* global document: false */
-		return document.getElementById('updateNotifierPopup');
-	}())
-);
-
+React.renderComponent(okCancelPopup, document.getElementById('okCancelPopup'));
+React.renderComponent(loadingPopup, document.getElementById('loadingPopup'));
+React.renderComponent(updateNotifierPopup, document.getElementById('updateNotifierPopup'));
 
 // Most of SyncItControl's code is organised like a giant state machine, this
 // made it easier for me to write but it will also give you the ability to have
@@ -245,7 +221,6 @@ syncItControl.on('entered-state', function(state) {
 
 // Yeh yeh.
 var handleErr = function(err) {
-	/* global alert: false */
 	alert("An Error " + err + " occurred.");
 };
 
@@ -258,21 +233,8 @@ var frontApp = function() {
 		todoListList
 		;
 
-	React.renderComponent(
-		renameListPopup,
-		(function() {
-			/* global document: false */
-			return document.getElementById('renameListPopup');
-		}())
-	);
-
-	React.renderComponent(
-		mailtoPopup,
-		(function() {
-			/* global document: false */
-			return document.getElementById('mailtoPopup');
-		}())
-	);
+	React.renderComponent(renameListPopup, document.getElementById('renameListPopup'));
+	React.renderComponent(mailtoPopup, document.getElementById('mailtoPopup'));
 
 	syncItCallbackToPromise(
 		syncItControl,
@@ -353,14 +315,7 @@ var frontApp = function() {
 		lists: lists,
 	});
 
-	React.renderComponent(
-		todoListList,
-		(function() {
-			/* global document: false */
-			return document.getElementById('lists');
-		}())
-	);
-
+	React.renderComponent(todoListList, document.getElementById('lists'));
 };
 
 var listApp = function() {
@@ -501,13 +456,7 @@ var listApp = function() {
 		);
 	});
 
-	React.renderComponent(
-		todoList,
-		(function() {
-			/* global document: false */
-			return document.getElementById('todoapp');
-		}())
-	);
+	React.renderComponent(todoList, document.getElementById('todoapp'));
 
 	var transitionToDataset = function(dataset) {
 		currentDataset = false;
@@ -551,18 +500,28 @@ var listApp = function() {
 return { list: listApp, front: frontApp };
 
 }(
-	React, require('../jsx/TodoListList'),
-	require('../jsx/RenameListPopup'), require('../jsx/OkCancelPopup'),
-	require('../jsx/TodoList'), require('./Constants'),
-	require('./syncItLoadAllKeysInDataset'), require('rekey'),
-	require('./getDeviceId'), require('./SyncItFactory'),
-	require('mout/object/map'), require('director/build/director.js'),
-	require('browser-lights'), require('../jsx/UpdateNotifierPopup'),
+	React,
+	require('./components/TodoListList'),
+	require('./components/RenameListPopup'),
+	require('./components/OkCancelPopup'),
+	require('./components/TodoList'),
+	require('./Constants'),
+	require('./syncItLoadAllKeysInDataset'),
+	require('rekey'),
+	require('./getDeviceId'),
+	require('./SyncItFactory'),
+	require('mout/object/map'),
+	require('director/build/director.js'),
+	require('browser-lights'),
+	require('./components/UpdateNotifierPopup'),
 	require('./getChangeLog'), /* require('syncit/FakeLocalStorage'), */
-	require('../jsx/LoadingPopup'), require('../jsx/MailtoPopup'),
-	require('./todomvcConflictResolutionFunction'), require('reqwest'),
-	require('when/callbacks'), require('when'),
-	require('mout/array/map'), require('sync-it/syncItCallbackToPromise'),
-	require('domready')
-
+	require('./components/LoadingPopup'),
+	require('./components/MailtoPopup'),
+	require('./todomvcConflictResolutionFunction'),
+	require('reqwest'),
+	require('when/callbacks'),
+	require('when'),
+	require('mout/array/map'),
+	require('sync-it/syncItCallbackToPromise'),
+	require('domready'),
 ));

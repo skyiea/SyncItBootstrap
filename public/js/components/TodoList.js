@@ -191,8 +191,8 @@ module.exports = (function (React,
 
 }(
 	React,
-	require('../js/React_Mixin_Manip'),
-	require('../js/Constants.js'),
+	require('../React_Mixin_Manip'),
+	require('../Constants.js'),
 	require('./TodoFooter'),
 	require('./TodoItem'),
 	require('mout/object/map'),
