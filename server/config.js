@@ -4,12 +4,12 @@ module.exports = {
 	},
 	https: {
 		port: 3001,
-		key: "https-key.pem",
-		cert: "https-cert.pem",
+		key: 'https-key.pem',
+		cert: 'https-cert.pem',
 	},
 	databases: {
 		main: {
-			host: "localhost",
+			host: 'localhost',
 			port: 27017,
 			name: 'syncittodomvc',
 			type: 'mongodb',

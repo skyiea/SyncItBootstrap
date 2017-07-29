@@ -311,7 +311,8 @@ var listApp = function() {
 		getErrorHandler = function(syncItOperation, appAction) {
 			return function(err) {
 				if (err) {
-					str = syncItOperation + ': ' + 'caused error ' + err;
+					let str = syncItOperation + ': ' + 'caused error ' + err;
+
 					if (appAction !== undefined) {
 						str = appAction + ' -> ' + str;
 					}

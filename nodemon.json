@@ -1,0 +1,8 @@
+{
+    "restartable": "rs",
+    "watch": [
+        "nodemon.json",
+        "server/"
+    ],
+    "ext": "js json"
+}

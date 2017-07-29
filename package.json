@@ -5,7 +5,8 @@
     "start": "node server/index.js",
     "build": "browserify -v -s app -t reactify public/js/App.js -o public/js/App.bundle.js",
     "watch": "watchify -v -s app -t reactify public/js/App.js -o public/js/App.bundle.js",
-    "test": "mocha test/*"
+    "test": "mocha test/*",
+    "nodemon": "nodemon"
   },
   "dependencies": {
     "bower": "^1.3.5",
@@ -21,6 +22,7 @@
     "jshint": "~2.4.4",
     "localforage": "^1.2.2",
     "manip": "^0.9.3",
+    "mongodb": "^1.4.1",
     "mongoskin": "^1.4.1",
     "mout": "^0.9.1",
     "react-tools": "^0.10.0",
@@ -37,6 +39,7 @@
   },
   "devDependencies": {
     "mocha": "~1.17.0",
+    "nodemon": "^1.11.0",
     "watchify": "^3.9.0"
   }
 }
