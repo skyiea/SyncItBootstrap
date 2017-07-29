@@ -12,7 +12,6 @@ module.exports = (function(
 
 	SyncItControl,
 	EventSourceMonitor,
-	SyncLocalStorage
 ) {
 
 	"use strict";
@@ -142,8 +141,6 @@ module.exports = (function(
 	require('sync-it/Path/AsyncLocalStorage'),
 	require('sync-it/dontListLocallyDeletedDatakeys'),
 	require('./syncItLoadAllKeysInDataset.js'),
-
 	require('syncit-control/Control'),
 	require('eventsource-monitor'),
-	require('sync-it/SyncLocalStorage')
 ));

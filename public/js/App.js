@@ -18,9 +18,6 @@ module.exports = (function (
 	MailtoPopup,
 	todomvcConflictResolutionFunction,
 	req,
-	whenCallback,
-	when,
-	arrayMap,
 	syncItCallbackToPromise
 ){
 
@@ -32,7 +29,7 @@ var
 	todoList = null,
 
 	// Builds manipulations to send to the UI layer.
-	buildManipultionJson = function(operation, location, value) {
+	buildManipulationJSON = function(operation, location, value) {
 		var sub = {};
 		sub['$' + operation] = {};
 		sub['$' + operation][location] = value;
@@ -41,7 +38,7 @@ var
 
 	// Whether or not to persist data in LocalStorage, though this is fed through
 	// the jade template from the appConfig variable right at the top of the
-	// servers app.js
+	// server's index.js
 	persistData = parseInt(document.body.dataset.persistData, 10),
 
 	// Whether we are in production or not. This will switch to using HTTPS for
@@ -102,7 +99,7 @@ var
 			if (err) { throw "SyncIt Error: " + err; }
 			todoList.manip(
 				false,
-				buildManipultionJson(
+				buildManipulationJSON(
 					'set',
 					'todos.' + k,
 					storedInformation.i
@@ -149,14 +146,10 @@ var
 
 	// Compares the version that the user was registered as having with the
 	// one we have just loaded and displays a change log for the the user.
-	changesForUser = (function() {
-		var versionData = {};
-
-		return getChangeLog(
-			versionData,
-			window.localStorage.getItem('_version')
-		);
-	}()),
+	changesForUser = getChangeLog(
+		{},
+		window.localStorage.getItem('_version')
+	),
 
 	// React components...
 	okCancelPopup = new OkCancelPopup(),
@@ -240,28 +233,22 @@ var frontApp = function() {
 		syncItControl,
 		syncItControl.getDatasetNamesFromSequenceData,
 		[Constants.SyncIt.Error.OK]
-	).then(
-		function(datasets) {
-			return when.all(
-				arrayMap(datasets, function(dataset) {
-					return whenCallback.call(
-						asyncLocalStorage.getItem.bind(asyncLocalStorage),
-						'_name_' + dataset
-					);
-				})
-			).then(function(names) {
-				return rekey(datasets, names);
-			});
-		}
-	).then(
-		function(newLists) {
-			lists = newLists;
-			todoListList.setProps({lists: lists});
-		},
-		function(err) {
-			handleErr(err);
-		}
-	);
+	).
+		then((datasets) =>
+			Promise.all(
+				datasets.map((dataset) => new Promise((resolve) =>
+					asyncLocalStorage.getItem('_name_' + dataset, resolve)
+				))
+			).
+			then((names) => rekey(datasets, names))
+		).
+		then(
+			(newLists) => {
+				lists = newLists;
+				todoListList.setProps({ lists });
+			},
+			handleErr
+		);
 
 	todoListList = new TodoListList({
 		onDeleteClick: function(dataset) {
@@ -342,7 +329,7 @@ var listApp = function() {
 		syncIt.update(
 			currentDataset,
 			todoKey,
-			buildManipultionJson('set', 'completed', v),
+			buildManipulationJSON('set', 'completed', v),
 			getErrorHandler('syncIt.update', 'app.todoToggle')
 		);
 	};
@@ -410,7 +397,7 @@ var listApp = function() {
 			syncIt.update(
 				currentDataset,
 				todoKey,
-				buildManipultionJson('set', 'title', title),
+				buildManipulationJSON('set', 'title', title),
 				getErrorHandler('syncIt.update', 'app.onTodoUpdateTitle')
 			);
 		},
@@ -441,13 +428,13 @@ var listApp = function() {
 		if (storedInformation.r === true) {
 			return todoList.manip(
 				false,
-				buildManipultionJson('unset', 'todos.' + storedInformation.k, 1),
+				buildManipulationJSON('unset', 'todos.' + storedInformation.k, 1),
 				function() {}
 			);
 		}
 		todoList.manip(
 			false,
-			buildManipultionJson(
+			buildManipulationJSON(
 				'set',
 				'todos.' + storedInformation.k,
 				storedInformation.i
@@ -519,9 +506,5 @@ return { list: listApp, front: frontApp };
 	require('./components/MailtoPopup'),
 	require('./todomvcConflictResolutionFunction'),
 	require('reqwest'),
-	require('when/callbacks'),
-	require('when'),
-	require('mout/array/map'),
 	require('sync-it/syncItCallbackToPromise'),
-	require('domready'),
 ));
